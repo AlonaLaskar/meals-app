@@ -1,70 +1,79 @@
 import 'package:flutter/material.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 import '../models/meal.dart';
 
 class MealDetailsScreen extends StatelessWidget {
-  const MealDetailsScreen({super.key, required this.meal});
+  const MealDetailsScreen({
+    super.key,
+    required this.meal,
+    required this.onToggleFavorite,
+  });
 
   final Meal meal;
+  final void Function(Meal meal) onToggleFavorite;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(meal.title),
-          actions: const [
-            Icon(
-              Icons.star,
-              color: Colors.white,
-            ),
-          ],
-        ),
+        appBar: AppBar(title: Text(meal.title), actions: [
+          IconButton(
+            onPressed: () {
+              onToggleFavorite(meal);
+            },
+            icon: const Icon(Icons.star),
+          )
+        ]),
         body: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.network(
                 meal.imageUrl,
-                fit: BoxFit.cover,
-                height: 200,
+                height: 300,
                 width: double.infinity,
+                fit: BoxFit.cover,
               ),
-              //image
               const SizedBox(height: 14),
-
-              Text("Ingredients",
-                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+              Text(
+                'Ingredients',
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              const SizedBox(height: 14),
+              for (final ingredient in meal.ingredients)
+                Text(
+                  ingredient,
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         color:
                             Theme.of(context).colorScheme.onSecondaryContainer,
-                        fontWeight: FontWeight.bold,
-                      )),
-              const SizedBox(height: 12),
-
-              Text(meal.ingredients.join('\n '),
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: Colors.white, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 12),
-
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                child: Text("Steps",
-                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      ),
+                ),
+              const SizedBox(height: 24),
+              Text(
+                'Steps',
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              const SizedBox(height: 14),
+              for (final step in meal.steps)
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  child: Text(
+                    step,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           color: Theme.of(context)
                               .colorScheme
                               .onSecondaryContainer,
-                          fontWeight: FontWeight.bold,
-                        )),
-              ),
-              const SizedBox(height: 12),
-              Text(meal.steps.join('\n '),
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(color: Colors.white)),
+                        ),
+                  ),
+                ),
             ],
           ),
         ));
