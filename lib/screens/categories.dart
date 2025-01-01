@@ -20,7 +20,7 @@ class CategoriesScreen extends StatelessWidget {
           meals: filteredMeals,
         ),
       ),
-    ); // Navigator.push(context, route)
+    );
   }
 
   @override
@@ -30,7 +30,7 @@ class CategoriesScreen extends StatelessWidget {
         title: const Text('Pick your category'),
       ),
       body: GridView(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(15),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 3 / 2,
